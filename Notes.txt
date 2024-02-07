@@ -1,0 +1,24 @@
+Basic Notes:
+
+Topic : NodeJs
+
+	1. What is NodeJs?
+	2. How much thread nodeJs contains?
+	3. Asynchronus vs synchronus.
+	4. Being a single threaded property,How nodeJs handles multiple request at a time?
+
+Topic : ExpressJs
+
+	1. What is ExpressJs?
+	2. Why it is used?
+	3. Why Auth token?
+		-JWT token
+		-Session token
+
+Topic : MongoDB
+	
+	1. What is MongoDB and what is the difference between MongoDB and mySQL.
+
+Topic : Others
+	
+	1. What is meant by "HTTP is stateless"?

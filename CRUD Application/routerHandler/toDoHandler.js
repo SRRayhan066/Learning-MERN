@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const toDoSchema = require('../databaseScema/toDoSchema');
 const ToDo = new mongoose.model('ToDo',toDoSchema);
+const checkLogin = require('../middlewares/checkLogin');
 
 // get all task
-router.get('/',(req,res)=>{
+router.get('/', checkLogin, (req,res)=>{
     ToDo.find().select({
         _id : 0,
         __v : 0
