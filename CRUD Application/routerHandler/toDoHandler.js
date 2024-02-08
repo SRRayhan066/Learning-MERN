@@ -2,12 +2,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const toDoSchema = require('../databaseScema/toDoSchema');
+const userSchema = require('../databaseScema/userSchema');
 const ToDo = new mongoose.model('ToDo',toDoSchema);
+const User = new mongoose.model('User',userSchema);
 const checkLogin = require('../middlewares/checkLogin');
+
 
 // get all task
 router.get('/', checkLogin, (req,res)=>{
-    ToDo.find().select({
+    ToDo.find({})
+    .populate('user')
+    .select({
         _id : 0,
         __v : 0
     })
@@ -42,18 +47,28 @@ router.get('/getOne',(req,res)=>{
 })
 
 // post a task
-router.post('/', async (req,res)=>{
-    const newToDo = new ToDo(req.body);
-    await newToDo.save()
-        .then(()=>{
-            res.status(200).json({
-                message : 'Successfully task added'
-            })
-        }).catch(err => {
-            res.status(500).json({
-                error : err
-            })
+router.post('/', checkLogin, async (req,res)=>{
+    const newToDo = new ToDo({
+        ...req.body,
+        user : req.userId
+    });
+    try{
+        const todo = await newToDo.save();
+
+        await User.updateOne({ _id : req.userId},{
+            $push : {
+                todos : todo._id
+            }
         })
+
+        res.status(200).json({
+            message : 'Successfully task added'
+        })
+    }catch(err){
+        res.status(500).json({
+            error : err
+        })
+    }
 })
 
 // post all task

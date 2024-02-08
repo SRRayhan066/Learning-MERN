@@ -12,7 +12,13 @@ const userSchema = mongoose.Schema({
     password : {
         type : String,
         required : true
-    }
+    },
+    todos : [
+        {
+            type : mongoose.Types.ObjectId,
+            ref : "ToDo"
+        }
+    ]
 });
 
 module.exports = userSchema;
